@@ -96,7 +96,14 @@ public class Character : FSMController<CharacterState, CharacterFSM, CharacterDa
 
     public void OnChangeState<T>() where T : CharacterState
     {
-        ChangeState<T>().SetElement(anim, rig, this);
+        if (states.ContainsKey(typeof(T).Name))
+        {
+            ChangeState<T>().SetElement(anim, rig, this);
+        }
+        else
+        {
+            CreateState<T>().SetElement(anim, rig, this);
+        }
     }
 
     public bool IsState<T>()
