@@ -158,7 +158,7 @@ public class Character : FSMController<CharacterState, CharacterFSM, CharacterDa
             isInside = true;
             if (userInfo != null)
                 OnVisibleMinimapIcon(Util.GetDistance(UserInfo.myInfo.index, userInfo.index, DataManager.instance.users.Count)
-                    + userInfo.slotFar <= UserInfo.myInfo.slotRange && userInfo.id != UserInfo.myInfo.id); // °¡´ÉÇÑ °Å¸®¿¡ ÀÖ´Â À¯Àú ¾ÆÀÌÄÜ¸¸ Ç¥½Ã
+                    + userInfo.slotFar <= UserInfo.myInfo.slotRange && userInfo.id != UserInfo.myInfo.id); // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Å¸ï¿½ï¿½ï¿½ ï¿½Ö´ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ü¸ï¿½ Ç¥ï¿½ï¿½
 
         }
     }
@@ -174,7 +174,7 @@ public class Character : FSMController<CharacterState, CharacterFSM, CharacterDa
             isInside = false;
             if (userInfo != null)
                 OnVisibleMinimapIcon(Util.GetDistance(UserInfo.myInfo.index, userInfo.index, DataManager.instance.users.Count)
-                    + userInfo.slotFar <= UserInfo.myInfo.slotRange && userInfo.id != UserInfo.myInfo.id); // °¡´ÉÇÑ °Å¸®¿¡ ÀÖ´Â À¯Àú ¾ÆÀÌÄÜ¸¸ Ç¥½Ã
+                    + userInfo.slotFar <= UserInfo.myInfo.slotRange && userInfo.id != UserInfo.myInfo.id); // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Å¸ï¿½ï¿½ï¿½ ï¿½Ö´ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ü¸ï¿½ Ç¥ï¿½ï¿½
         }
     }
 
@@ -196,8 +196,9 @@ public class Character : FSMController<CharacterState, CharacterFSM, CharacterDa
             fsm.UpdateState();
     }
 
-    public async void SetDeath()
+    public async void SetDeath(long id)
     {
+        GameManager.instance.characters.Remove(id);
         death.SetActive(true);
         collider.enabled = false;
         targetMark.SetActive(true);
