@@ -120,7 +120,7 @@ public class PopupDeck : UIListBase<Card>
     {
         var idx = uiPagingViewController.selectedIdx;
         var card = UserInfo.myInfo.handCards[idx];
-        if (card.rcode == "CAD00005")
+        if (card.rcode == "")
         {
             UIManager.ShowAlert("누구에게 사용 하시겠습니까?", "119 호출", "나에게", "모두에게", () =>
             {
