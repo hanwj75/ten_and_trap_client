@@ -11,8 +11,8 @@ public class UserInfoSlot : UIListItem
 {
     [SerializeField] private Image thumbnail;
     [SerializeField] private TMP_Text nickname;
-    [SerializeField] private List<GameObject> hpSlots;
-    [SerializeField] private List<GameObject> hpGauges;
+    // [SerializeField] private List<GameObject> hpSlots;
+    // [SerializeField] private List<GameObject> hpGauges;
     [SerializeField] private GameObject targetMark;
     [SerializeField] private TMP_Text index;
     [SerializeField] private Image weapon;
@@ -20,6 +20,7 @@ public class UserInfoSlot : UIListItem
     [SerializeField] private List<Image> debuffs;
     [SerializeField] private GameObject select;
     [SerializeField] private GameObject death;
+    [SerializeField] private TMP_Text cardCount;
 
     public int idx;
     public UnityAction<int> callback;
@@ -33,13 +34,14 @@ public class UserInfoSlot : UIListItem
         var data = DataManager.instance.GetData<CharacterDataSO>(userinfo.selectedCharacterRcode);
         thumbnail.sprite = await ResourceManager.instance.LoadAsset<Sprite>(data.rcode, eAddressableType.Thumbnail);
         targetMark.GetComponent<Image>().sprite = await ResourceManager.instance.LoadAsset<Sprite>("role_" + userinfo.roleType.ToString(), eAddressableType.Thumbnail);
-        for (int i = 0; i < 5; i++)
-        {
-            hpSlots[i].SetActive(userinfo.hp > i);
-            hpGauges[i].SetActive(userinfo.hp > i);
-        }
+        // for (int i = 0; i < 5; i++)
+        // {
+        //     hpSlots[i].SetActive(userinfo.hp > i);
+        //     hpGauges[i].SetActive(userinfo.hp > i);
+        // }
         targetMark.SetActive(userinfo.roleType == eRoleType.target);
         this.index.text = (index + 1).ToString();
+        cardCount.text = userinfo.handcardCount.ToString();
         gameObject.SetActive(true);
         if (weapon != null)
         {
@@ -57,10 +59,10 @@ public class UserInfoSlot : UIListItem
 
     public async void UpdateData(UserInfo userinfo)
     {
-        for (int i = 0; i < 5; i++)
-        {
-            hpGauges[i].SetActive(userinfo.hp > i);
-        }
+        // for (int i = 0; i < 5; i++)
+        // {
+        //     hpGauges[i].SetActive(userinfo.hp > i);
+        // }
         if (weapon != null)
         {
             weapon.gameObject.SetActive(userinfo.weapon != null);
@@ -93,6 +95,7 @@ public class UserInfoSlot : UIListItem
                 debuffs[i].gameObject.SetActive(false);
             }
         }
+        cardCount.text = userinfo.handcardCount.ToString();
     }
 
     public void OnClickItem()
@@ -112,11 +115,11 @@ public class UserInfoSlot : UIListItem
 
     public void SetDeath()
     {
-        for (int i = 0; i < 5; i++)
-        {
-            hpGauges[i].SetActive(false);
-        }
-        death.SetActive(true);
-        SetVisibleRole(true);
+        // for (int i = 0; i < 5; i++)
+        // {
+        //     hpGauges[i].SetActive(false);
+        // }
+        // death.SetActive(true);
+        // SetVisibleRole(true);
     }
 }
