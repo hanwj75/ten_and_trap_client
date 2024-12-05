@@ -20,6 +20,7 @@ public class UserInfoSlot : UIListItem
     [SerializeField] private List<Image> debuffs;
     [SerializeField] private GameObject select;
     [SerializeField] private GameObject death;
+    [SerializeField] private TMP_Text cardCount;
 
     public int idx;
     public UnityAction<int> callback;
@@ -40,6 +41,7 @@ public class UserInfoSlot : UIListItem
         }
         targetMark.SetActive(userinfo.roleType == eRoleType.target);
         this.index.text = (index + 1).ToString();
+        cardCount.text = userinfo.handcardCount.ToString();
         gameObject.SetActive(true);
         if (weapon != null)
         {
@@ -93,6 +95,7 @@ public class UserInfoSlot : UIListItem
                 debuffs[i].gameObject.SetActive(false);
             }
         }
+        cardCount.text = userinfo.handcardCount.ToString();
     }
 
     public void OnClickItem()

@@ -20,6 +20,7 @@ public class UIGame : UIBase
     [SerializeField] private GameObject selectCard;
     [SerializeField] private TMP_Text selectCardText;
     [SerializeField] private TMP_Text deckCount;
+    [SerializeField] private TMP_Text cardCount;
     [SerializeField] private Button buttonShot;
     [SerializeField] private TMP_Text noticeText;
     [SerializeField] private TMP_Text noticeLogItem;
@@ -112,6 +113,7 @@ public class UIGame : UIBase
     public void SetDeckCount()
     {
         deckCount.text = UserInfo.myInfo.handCards.Count.ToString();
+        cardCount.text = UserInfo.myInfo.handCards.Count.ToString();
     }
 
     void Update()
