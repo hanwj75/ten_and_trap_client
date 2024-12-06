@@ -12,6 +12,7 @@ using System.Linq;
 using UnityEngine.SceneManagement;
 using System.Threading.Tasks;
 using static UnityEngine.UIElements.UxmlAttributeDescription;
+using NUnit;
 
 public class SocketManager : TCPSocketManagerBase<SocketManager>
 {
@@ -140,6 +141,7 @@ public class SocketManager : TCPSocketManagerBase<SocketManager>
     public async void GameStartNotification(GamePacket gamePacket)
     {
         var response = gamePacket.GameStartNotification;
+        Debug.Log(response.Tagger);
         await SceneManager.LoadSceneAsync("Game");
         while (!UIManager.IsOpened<UIGame>())
         {
@@ -169,7 +171,15 @@ public class SocketManager : TCPSocketManagerBase<SocketManager>
             GameManager.instance.characters[DataManager.instance.users[i].id].SetPosition(response.CharacterPositions[i].ToVector3());
         }
         GameManager.instance.OnGameStart();
-        GameManager.instance.SetGameState(response.GameState);
+        GameManager.instance.SetGameState(response.GameState, response.Tagger);
+        var users = DataManager.instance.users;
+        var myIndex = users.FindIndex(obj => obj.id == response.Tagger);
+        if (myIndex >= 0)
+        {
+            var text = string.Format("{0}님이 술래입니다.", users[myIndex].nickname);
+            UIGame.instance.SetNotice(text);
+        }
+
     }
 
     // ��ġ ������Ʈ
@@ -209,7 +219,7 @@ public class SocketManager : TCPSocketManagerBase<SocketManager>
         }
         var use = DataManager.instance.users.Find(obj => obj.id == response.UserId);
         var target = DataManager.instance.users.Find(obj => obj.id == response.TargetUserId);
-        var text = string.Format(response.TargetUserId != 0 ? "{0}������ {1}ī�带 ����߽��ϴ�." : "{0}������ {1}ī�带 {2}�������� ����߽��ϴ�.",
+        var text = string.Format(response.TargetUserId != 0 ? "{0}유저가 {1}를 사용했습니다." : "{0}유저가 {1}를 {2}에게 사용하였습니다.",
             use.nickname, response.CardType.GetCardData().displayName, target.nickname);
         UIGame.instance.SetNotice(text);
         if(response.UserId == UserInfo.myInfo.id && card.cardType == CardType.Bbang)
@@ -514,9 +524,20 @@ public class SocketManager : TCPSocketManagerBase<SocketManager>
     public void PhaseUpdateNotification(GamePacket gamePacket)
     {
         var response = gamePacket.PhaseUpdateNotification;
+        Debug.Log(response.Tagger);
+        if (response.PhaseType == PhaseType.End)
+        {
+            var users = DataManager.instance.users;
+            var myIndex = users.FindIndex(obj => obj.id == response.Tagger);
+            if (myIndex >= 0)
+            {
+                var text = string.Format("{0}님이 술래입니다.", users[myIndex].nickname);
+                UIGame.instance.SetNotice(text);
+            }
+        }
         if (UIGame.instance != null)
-            GameManager.instance.SetGameState(response.PhaseType, response.NextPhaseAt);
-        for(int i = 0; i < response.CharacterPositions.Count; i++)
+            GameManager.instance.SetGameState(response.PhaseType, response.NextPhaseAt, response.Tagger);
+        for (int i = 0; i < response.CharacterPositions.Count; i++)
         {
             GameManager.instance.characters[DataManager.instance.users[i].id].SetPosition(response.CharacterPositions[i].ToVector3());
         }

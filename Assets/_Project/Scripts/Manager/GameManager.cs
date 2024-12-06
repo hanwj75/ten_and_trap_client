@@ -43,7 +43,7 @@ public class GameManager : MonoSingleton<GameManager>
     public List<CardDataSO> pleaMarketCards = new List<CardDataSO>();
     List<Transform> spawns;
     public bool isSelectBombTarget = false;
-
+    public long curTagger;
     private void Start()
     {
         if (!SocketManager.instance.isConnected) Init();
@@ -98,12 +98,13 @@ public class GameManager : MonoSingleton<GameManager>
         isInit = true;
     }
 
-    public void SetGameState(GameStateData gameStateData)
+    public void SetGameState(GameStateData gameStateData, long taggerId)
     {
-        SetGameState(gameStateData.PhaseType, gameStateData.NextPhaseAt);
+        curTagger = taggerId;
+        SetGameState(gameStateData.PhaseType, gameStateData.NextPhaseAt,taggerId);
     }
 
-    public async void SetGameState(PhaseType PhaseType, long NextPhaseAt)
+    public async void SetGameState(PhaseType PhaseType, long NextPhaseAt, long taggerId)
     { 
         if (PhaseType == PhaseType.Day)
         {
@@ -124,11 +125,15 @@ public class GameManager : MonoSingleton<GameManager>
 
         if (PhaseType == PhaseType.End)
         {
-            if(UserInfo.myInfo.handCards.Count > UserInfo.myInfo.hp)
+            if (curTagger == UserInfo.myInfo.id && UserInfo.myInfo.useCardCount == 0)
+            {
                 UIManager.Show<PopupRemoveCardSelection>();
+            }
+            UserInfo.myInfo.useCardCount = 0;
         }
         else
         {
+            curTagger = taggerId;
             UIManager.Hide<PopupRemoveCardSelection>();
         }
         
@@ -275,6 +280,8 @@ public class GameManager : MonoSingleton<GameManager>
             //packet.UseCardRequest = new C2SUseCardRequest() { CardType = cardIdx, TargetUserId = userinfo == null ? "" : userinfo.id };
             packet.UseCardRequest = new C2SUseCardRequest() { CardType = card.cardType, TargetUserId = userinfo == null ? 0 : userinfo.id };
             SocketManager.instance.Send(packet);
+            useUserInfo.useCardCount = 99;
+            Debug.Log(useUserInfo.id+":"+useUserInfo.useCardCount);
         }
         else
         {
