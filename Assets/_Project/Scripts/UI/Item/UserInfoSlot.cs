@@ -61,7 +61,8 @@ public class UserInfoSlot : UIListItem
     {
         for (int i = 0; i < 5; i++)
         {
-            hpGauges[i].SetActive(userinfo.hp > i);
+            // 임시조치
+            //hpGauges[i].SetActive(userinfo.hp > i);
         }
         if (weapon != null)
         {

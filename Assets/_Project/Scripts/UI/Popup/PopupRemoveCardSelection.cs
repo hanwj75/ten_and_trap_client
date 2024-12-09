@@ -23,7 +23,7 @@ public class PopupRemoveCardSelection : UIListBase<Card>
     public override void Opened(object[] param)
     {
         targetUserInfo = UserInfo.myInfo;
-        count.text = string.Format("선택 개수 : {0} 필요 개수 : {1}", selectCards.Count, Mathf.Max(0, UserInfo.myInfo.handCards.Count - UserInfo.myInfo.hp));
+        count.text = string.Format("선택 개수 : {0} 필요 개수 : {1}", selectCards.Count, 1);
         SetList();
     }
 
@@ -120,9 +120,9 @@ public class PopupRemoveCardSelection : UIListBase<Card>
             selectCards.Add(card);
             card.OnSelect(true);
         }
-        count.text = string.Format("선택 개수 : {0} 필요 개수 : {1}", selectCards.Count, Mathf.Max(0, UserInfo.myInfo.handCards.Count - UserInfo.myInfo.hp));
-        use.gameObject.SetActive(UserInfo.myInfo.handCards.Count - selectCards.Count == UserInfo.myInfo.hp);
-        count.gameObject.SetActive(UserInfo.myInfo.handCards.Count - selectCards.Count != UserInfo.myInfo.hp);
+        count.text = string.Format("선택 개수 : {0} 필요 개수 : {1}", selectCards.Count, 1);
+        use.gameObject.SetActive(1 - selectCards.Count == 0);
+        count.gameObject.SetActive(1 - selectCards.Count != 0);
     }
 
     public List<CardData> CreateField()
