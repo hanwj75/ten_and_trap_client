@@ -16,7 +16,7 @@ public class PopupDeck : UIListBase<Card>
     {
         SetList();
         if (GameManager.instance.userCharacter.IsState<CharacterPrisonState>() ||
-            GameManager.instance.userCharacter.IsState<CharacterStopState>())
+            GameManager.instance.userCharacter.IsState<CharacterStopState>() || !UserInfo.myInfo.isTagger)
         {
             use.gameObject.SetActive(false);
         }
@@ -28,8 +28,8 @@ public class PopupDeck : UIListBase<Card>
 
     private void Update()
     {
-        if(GameManager.instance.userCharacter.IsState<CharacterIdleState>() ||
-            GameManager.instance.userCharacter.IsState<CharacterWalkState>())
+        if((GameManager.instance.userCharacter.IsState<CharacterIdleState>() ||
+            GameManager.instance.userCharacter.IsState<CharacterWalkState>()) && UserInfo.myInfo.isTagger)
         {
             use.gameObject.SetActive(true);
         }
@@ -136,7 +136,8 @@ public class PopupDeck : UIListBase<Card>
         }
         else
         {
-            OnUseCard();
+            if (UserInfo.myInfo.isTagger)
+                OnUseCard();
         }
     }
 

@@ -2555,6 +2555,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: ButtonClose
       objectReference: {fileID: 0}
+    - target: {fileID: 4512400709931089613, guid: aa2c7d0fd38834c4b9881aed24b755ab, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

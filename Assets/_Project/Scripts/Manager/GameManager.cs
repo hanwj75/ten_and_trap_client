@@ -44,6 +44,7 @@ public class GameManager : MonoSingleton<GameManager>
     List<Transform> spawns;
     public bool isSelectBombTarget = false;
     public long curTagger;
+    public long preTagger;
     private void Start()
     {
         if (!SocketManager.instance.isConnected) Init();
@@ -128,12 +129,26 @@ public class GameManager : MonoSingleton<GameManager>
             if (curTagger == UserInfo.myInfo.id && UserInfo.myInfo.useCardCount == 0)
             {
                 UIManager.Show<PopupRemoveCardSelection>();
+                preTagger = curTagger;
             }
             UserInfo.myInfo.useCardCount = 0;
+            UserInfo.myInfo.isTagger = false;
         }
         else
         {
             curTagger = taggerId;
+            if(curTagger == UserInfo.myInfo.id)
+            {
+                UserInfo.myInfo.isTagger = true;
+            }
+
+            if (preTagger == UserInfo.myInfo.id && !UserInfo.myInfo.isDestroy && SocketManager.instance.isConnected) {
+                GamePacket packet = new GamePacket();
+                packet.DestroyCardRandomRequest = new C2SDestroyCardRandomRequest();
+                SocketManager.instance.Send(packet);
+                preTagger = -1;
+            }
+            UserInfo.myInfo.isDestroy = false;
             UIManager.Hide<PopupRemoveCardSelection>();
         }
         
@@ -281,6 +296,7 @@ public class GameManager : MonoSingleton<GameManager>
             packet.UseCardRequest = new C2SUseCardRequest() { CardType = card.cardType, TargetUserId = userinfo == null ? 0 : userinfo.id };
             SocketManager.instance.Send(packet);
             useUserInfo.useCardCount = 99;
+            useUserInfo.isTagger = false;
             Debug.Log(useUserInfo.id+":"+useUserInfo.useCardCount);
         }
         else
