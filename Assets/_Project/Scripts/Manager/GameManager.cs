@@ -296,7 +296,6 @@ public class GameManager : MonoSingleton<GameManager>
             packet.UseCardRequest = new C2SUseCardRequest() { CardType = card.cardType, TargetUserId = userinfo == null ? 0 : userinfo.id };
             SocketManager.instance.Send(packet);
             useUserInfo.useCardCount = 99;
-            useUserInfo.isTagger = false;
             Debug.Log(useUserInfo.id+":"+useUserInfo.useCardCount);
         }
         else
