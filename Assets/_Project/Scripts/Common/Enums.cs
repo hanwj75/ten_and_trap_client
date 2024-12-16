@@ -42,4 +42,6 @@ public enum eCharacterState
     HALLUCINATING = 13, // 신기루 중
     HALLUCINATION_TARGET = 14, // 신기루 대상
     CONTAINED = 15, // 감금 중
+    THROW_AWAY_TARGET = 16, // 버려 대상
+    THROW_AWAY_ALL_TARGET = 17, // 모두 버려 대상
 }

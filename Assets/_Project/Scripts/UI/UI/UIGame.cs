@@ -22,6 +22,7 @@ public class UIGame : UIBase
     [SerializeField] private TMP_Text deckCount;
     [SerializeField] private TMP_Text cardCount;
     [SerializeField] private Button buttonShot;
+    [SerializeField] private TMP_Text taggerNoticeText;
     [SerializeField] private TMP_Text noticeText;
     [SerializeField] private TMP_Text noticeLogItem;
     [SerializeField] private GameObject noticeLog;
@@ -216,6 +217,10 @@ public class UIGame : UIBase
         var item = Instantiate(noticeLogItem, noticeLogParent);
         item.text = notice;
         noticeLogItem.rectTransform.sizeDelta = new Vector2(item.preferredWidth, item.preferredHeight);
+    }
+    public void SetTaggerNotice(string taggerNotice)
+    {
+        taggerNoticeText.text = taggerNotice;
     }
 
     public void SetBombButton(bool isActive)

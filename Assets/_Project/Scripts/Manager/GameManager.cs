@@ -437,31 +437,9 @@ public class GameManager : MonoSingleton<GameManager>
         {
             case "CAD00001":
             case "CAD00002":
-            case "CAD00007":
-                {
-                    if (string.IsNullOrEmpty(rcode))
-                    {
-                        userinfo.hp--;
-                    }
-                }
-                break;
+            case "CAD00004":
             case "CAD00006":
-                {
-                    if (string.IsNullOrEmpty(rcode))
-                    {
-                        userinfo.hp--;
-                    }
-                    else
-                    {
-                        var card = DataManager.instance.GetData<CardDataSO>(actionRcode);
-                        var defCard = useUserInfo.handCards.Find(obj => obj.rcode == card.defCard);
-                        if(defCard != null)
-                        {
-                            useUserInfo.OnUseCard(defCard);
-                            UIManager.Get<PopupBattle>().AddUseCard(defCard);
-                        }
-                    }
-                }
+            case "CAD00007":
                 break;
             case "CAD00008":
                 {
