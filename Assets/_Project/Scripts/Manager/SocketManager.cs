@@ -177,7 +177,7 @@ public class SocketManager : TCPSocketManagerBase<SocketManager>
         if (myIndex >= 0)
         {
             var text = string.Format("{0}님이 술래입니다.", users[myIndex].nickname);
-            UIGame.instance.SetNotice(text);
+            UIGame.instance.SetTaggerNotice(text);
         }
 
     }
@@ -354,7 +354,7 @@ public class SocketManager : TCPSocketManagerBase<SocketManager>
                             targetCharacter.OnChangeState<CharacterStopState>();
                         }
                         break;
-                    case eCharacterState.BBANG_TARGET: // �� Ÿ��
+                    case eCharacterState.BBANG_TARGET:
                         {
                             var card = DataManager.instance.GetData<CardDataSO>("CAD00001");
                             if (user.handCards.FindAll(obj => obj.rcode == card.defCard).Count >= targetInfo.needShieldCount)
@@ -368,29 +368,30 @@ public class SocketManager : TCPSocketManagerBase<SocketManager>
                             }
                         }
                         break;
-                    case eCharacterState.DEATH_MATCH: // ���� ���
+                    case eCharacterState.THROW_AWAY_TARGET:
                         {
-                            var card = DataManager.instance.GetData<CardDataSO>("CAD00006");
-                            if (user.handCards.Find(obj => obj.rcode == card.defCard))
+                            var card = DataManager.instance.GetData<CardDataSO>("CAD00004");
+                            if (user.handCards.FindAll(obj => obj.rcode == card.defCard).Count >= targetInfo.needShieldCount)
                             {
                                 targetCharacter.OnChangeState<CharacterStopState>();
-                                var ui = await UIManager.Show<PopupBattle>(card.rcode, targetId, callback);
-                                ui.SetActiveControl(false);
-                            }
-                        }
-                        break;
-                    case eCharacterState.DEATH_MATCH_TURN: // ���� ����
-                        {
-                            var card = DataManager.instance.GetData<CardDataSO>("CAD00006");
-                            if (user.handCards.Find(obj => obj.rcode == card.defCard))
-                            {
-                                targetCharacter.OnChangeState<CharacterStopState>();
-                                var ui = await UIManager.Show<PopupBattle>(card.rcode, targetId, callback);
-                                ui.SetActiveControl(true);
+                                UIManager.Show<PopupBattle>(card.rcode, users[i].characterData.StateInfo.StateTargetUserId, callback);
                             }
                             else
                             {
-                                UIManager.Hide<PopupBattle>();
+                                callback.Invoke(0, 0);
+                            }
+                        }
+                        break;
+                    case eCharacterState.THROW_AWAY_ALL_TARGET:
+                        {
+                            var card = DataManager.instance.GetData<CardDataSO>("CAD00006");
+                            if (user.handCards.FindAll(obj => obj.rcode == card.defCard).Count >= targetInfo.needShieldCount)
+                            {
+                                targetCharacter.OnChangeState<CharacterStopState>();
+                                UIManager.Show<PopupBattle>(card.rcode, users[i].characterData.StateInfo.StateTargetUserId, callback);
+                            }
+                            else
+                            {
                                 callback.Invoke(0, 0);
                             }
                         }
@@ -543,7 +544,7 @@ public class SocketManager : TCPSocketManagerBase<SocketManager>
             if (myIndex >= 0)
             {
                 var text = string.Format("{0}님이 술래입니다.", users[myIndex].nickname);
-                UIGame.instance.SetNotice(text);
+                UIGame.instance.SetTaggerNotice(text);
             }
         }
         if (UIGame.instance != null)
