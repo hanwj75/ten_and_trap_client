@@ -219,8 +219,19 @@ public class SocketManager : TCPSocketManagerBase<SocketManager>
         }
         var use = DataManager.instance.users.Find(obj => obj.id == response.UserId);
         var target = DataManager.instance.users.Find(obj => obj.id == response.TargetUserId);
-        var text = string.Format(response.TargetUserId != 0 ? "{0}유저가 {1}를 사용했습니다." : "{0}유저가 {1}를 {2}에게 사용하였습니다.",
+        var text = "";
+        if (UserInfo.myInfo.isTagger){
+            text = string.Format(response.TargetUserId != 0 ? "{0}유저가 {1}를 사용했습니다. 페이즈가 넘어갑니다." : "{0}유저가 {1}를 {2}에게 사용하였습니다. 페이즈가 넘어갑니다.",
             use.nickname, response.CardType.GetCardData().displayName, target.nickname);
+            GamePacket packet = new GamePacket();
+            packet.PhaseChangeRequest = new C2SPhaseChangeRequest();
+            Send(packet);
+            UserInfo.myInfo.isTagger = false;
+        }
+        else{
+            text = string.Format(response.TargetUserId != 0 ? "{0}유저가 {1}를 사용했습니다." : "{0}유저가 {1}를 {2}에게 사용하였습니다.",
+            use.nickname, response.CardType.GetCardData().displayName, target.nickname);
+        }
         UIGame.instance.SetNotice(text);
         if(response.UserId == UserInfo.myInfo.id && card.cardType == CardType.Bbang)
         {
