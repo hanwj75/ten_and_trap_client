@@ -31,10 +31,10 @@ public class PopupResult : UIBase
     {
         var winners = (RepeatedField<long>)param[0];
         var winnerType = (WinType)param[1];
-        role.gameObject.SetActive(true);
-        roleText.gameObject.SetActive(true);
-        role.sprite = await ResourceManager.instance.LoadAsset<Sprite>("Role_" + winnerType.ToString(), eAddressableType.Thumbnail);
-        roleText.text = roleTexts[(int)winnerType];
+        //role.gameObject.SetActive(true);
+        //roleText.gameObject.SetActive(true);
+        //role.sprite = await ResourceManager.instance.LoadAsset<Sprite>("Role_" + winnerType.ToString(), eAddressableType.Thumbnail);
+        //roleText.text = roleTexts[(int)winnerType];
         await Task.Delay(500);
         for (int i = 0; i < resultUserSlots.Count; i++)
         {

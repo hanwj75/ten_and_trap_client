@@ -20,7 +20,7 @@ public class UserInfoSlot : UIListItem
     [SerializeField] private List<Image> debuffs;
     [SerializeField] private GameObject select;
     [SerializeField] private GameObject death;
-    [SerializeField] private TMP_Text cardCount;
+    [SerializeField] public TMP_Text cardCount;
 
     public int idx;
     public UnityAction<int> callback;
