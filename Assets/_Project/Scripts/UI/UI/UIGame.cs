@@ -12,7 +12,7 @@ public class UIGame : UIBase
 {
     public static UIGame instance { get => UIManager.Get<UIGame>(); }
     [SerializeField] private TMP_Text shotCount;
-    [SerializeField] private UserInfoSlot userInfoSlot;
+    [SerializeField] public UserInfoSlot userInfoSlot;
     [SerializeField] private UserInfoSlot anotherSlotPrefab;
     [SerializeField] private RectTransform userInfoParent;
     [SerializeField] private TMP_Text dayInfo;
@@ -22,7 +22,7 @@ public class UIGame : UIBase
     [SerializeField] private TMP_Text deckCount;
     [SerializeField] private TMP_Text cardCount;
     [SerializeField] private Button buttonShot;
-    [SerializeField] private TMP_Text taggerNoticeText;
+    [SerializeField] public TMP_Text taggerNoticeText;
     [SerializeField] private TMP_Text noticeText;
     [SerializeField] private TMP_Text noticeLogItem;
     [SerializeField] private GameObject noticeLog;
