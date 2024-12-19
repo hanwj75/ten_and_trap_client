@@ -159,13 +159,9 @@ public class UIGame : UIBase
         {
             if (GameManager.instance.SelectedCard != null)
             {
-                if (UserInfo.myInfo.handCards.Find(obj => obj.rcode == GameManager.instance.SelectedCard.rcode) == null ||
-                    (GameManager.instance.SelectedCard.cardType == CardType.Bbang && !UserInfo.myInfo.isShotPossible))
-                {
-                    GameManager.instance.UnselectCard();
-                    SetShotButton(false);
-                    return;
-                }
+                GameManager.instance.UnselectCard();
+                SetShotButton(false);
+                return;
             }
             return;
         }
@@ -191,11 +187,11 @@ public class UIGame : UIBase
     public int SetShotCount()
     {
         var card = GameManager.instance.SelectedCard;
-        var count = UserInfo.myInfo.handCards.FindAll(obj => obj.rcode == card.rcode).Count;
+        var count = 1;
         shotCount.text = count.ToString();
         if (card.cardType == CardType.Bbang)
         {
-            count = Mathf.Min(UserInfo.myInfo.handCards.FindAll(obj => obj.rcode == card.rcode).Count, UserInfo.myInfo.bbangCount - UserInfo.myInfo.shotCount);
+            count = 1;
             shotCount.text = count.ToString();
         }
         return count;

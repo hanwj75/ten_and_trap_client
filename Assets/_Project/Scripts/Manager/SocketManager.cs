@@ -233,11 +233,12 @@ public class SocketManager : TCPSocketManagerBase<SocketManager>
             use.nickname, response.CardType.GetCardData().displayName, target.nickname);
         }
         UIGame.instance.SetNotice(text);
-        if(response.UserId == UserInfo.myInfo.id && card.cardType == CardType.Bbang)
-        {
-            //UserInfo.myInfo.shotCount++;
-            UIGame.instance.SetSelectCard(null);
-        }
+        UIGame.instance.SetSelectCard(null);
+        //if (response.UserId == UserInfo.myInfo.id)
+        //{
+        //    //UserInfo.myInfo.shotCount++;
+        //    UIGame.instance.SetSelectCard(null);
+        //}
 
     }
 
@@ -294,6 +295,13 @@ public class SocketManager : TCPSocketManagerBase<SocketManager>
         {
             if (UIManager.IsOpened<PopupBattle>())
                 UIManager.Hide<PopupBattle>();
+
+            for (int i = 0; i < DataManager.instance.users.Count; i++)
+            {
+                var targetCharacter = GameManager.instance.characters[DataManager.instance.users[i].id];
+                targetCharacter.OnChangeState<CharacterStopState>();
+            }
+
         }
     }
 

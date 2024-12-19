@@ -17,7 +17,7 @@ public class PopupBattle : UIListBase<Card>
     [SerializeField] private GameObject nonCardText;
     [SerializeField] private TMP_Text timer;
 
-    float time = 0;
+    float time = 7;
 
     CardDataSO targetCard;
     UserInfo targetUser;
@@ -37,6 +37,7 @@ public class PopupBattle : UIListBase<Card>
         uiPagingViewController.OnMoveEnd += OnMoveEnd;
         title.text = targetCard.displayName;
         AddUseCard(targetCard);
+        SetUserSelectTurn(time);
     }
 
     public void SetActiveControl(bool isActive)
@@ -118,7 +119,7 @@ public class PopupBattle : UIListBase<Card>
         HideDirect();
     }
 
-    public void SetUserSelectTurn(int time)
+    public void SetUserSelectTurn(float time)
     {
         this.time = time;
         timer.text = time.ToString();
@@ -132,6 +133,15 @@ public class PopupBattle : UIListBase<Card>
             time -= Time.deltaTime;
             timer.text = string.Format("{0:0}", time);
             yield return null;
+        }
+        if(time <= 0)
+        {
+            if (SocketManager.instance.isConnected)
+            {
+                callback.Invoke(0, 0);
+            }
+            HideDirect();
+
         }
     }
 }

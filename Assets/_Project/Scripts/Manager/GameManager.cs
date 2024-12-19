@@ -131,6 +131,7 @@ public class GameManager : MonoSingleton<GameManager>
                 UIManager.Show<PopupRemoveCardSelection>();
                 preTagger = curTagger;
             }
+            UIGame.instance.SetSelectCard(null);
             UserInfo.myInfo.useCardCount = 0;
             UserInfo.myInfo.isTagger = false;
         }
@@ -295,8 +296,11 @@ public class GameManager : MonoSingleton<GameManager>
             //packet.UseCardRequest = new C2SUseCardRequest() { CardType = cardIdx, TargetUserId = userinfo == null ? "" : userinfo.id };
             packet.UseCardRequest = new C2SUseCardRequest() { CardType = card.cardType, TargetUserId = userinfo == null ? 0 : userinfo.id };
             SocketManager.instance.Send(packet);
-            useUserInfo.useCardCount = 99;
-            Debug.Log(useUserInfo.id+":"+useUserInfo.useCardCount);
+            if(rcode != "CAD00003")
+            {
+                useUserInfo.useCardCount = 99;
+                Debug.Log(useUserInfo.id + ":" + useUserInfo.useCardCount);
+            }
         }
         else
         {
