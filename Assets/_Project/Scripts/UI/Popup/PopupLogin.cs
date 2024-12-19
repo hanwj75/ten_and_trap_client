@@ -42,7 +42,7 @@ public class PopupLogin : UIBase
         if (!SocketManager.instance.isConnected)
         {
             var ip = PlayerPrefs.GetString("ip", "127.0.0.1");
-            var port = PlayerPrefs.GetString("port", "5555");
+            var port = PlayerPrefs.GetString("port", "3333");
             SocketManager.instance.Init(ip, int.Parse(port));
             SocketManager.instance.Connect(() =>
             {
@@ -63,7 +63,7 @@ public class PopupLogin : UIBase
         if (!SocketManager.instance.isConnected)
         {
             var ip = PlayerPrefs.GetString("ip", "127.0.0.1");
-            var port = PlayerPrefs.GetString("port", "5555");
+            var port = PlayerPrefs.GetString("port", "3333");
             SocketManager.instance.Init(ip, int.Parse(port));
             SocketManager.instance.Connect(() =>
             {
